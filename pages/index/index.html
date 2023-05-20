@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PIZZA</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="container_content">
+        <header>
+          <div class="logo_title">
+            <img src="../../img/logo.png" alt="logo" />
+            <div class="title">
+              <h1>PIZZA</h1>
+              <p>самая вкусная пицца в мире</p>
+            </div>
+          </div>
+          <button class="btn_card">
+            <p class="allPrice">0</p>
+            <span class="split_line"></span>
+            <span class="btn_card_count">
+              <img src="../../img/card_icon.png" alt="" />
+              <p class="quantityPizza">0</p>
+            </span>
+          </button>
+        </header>
+
+        <main class="main">
+          <section class="filter_panel">
+            <div class="btns_filter">
+              <button class="btn_filter btn_filter_active" data-sort="Все">
+                Все
+              </button>
+              <button class="btn_filter" data-sort="Мясные">Мясные</button>
+              <button class="btn_filter" data-sort="Вегетариансике">
+                Вегетариансике
+              </button>
+              <button class="btn_filter" data-sort="Гриль">Гриль</button>
+              <button class="btn_filter" data-sort="Острые">Острые</button>
+              <button class="btn_filter" data-sort="Закрытые">Закрытые</button>
+            </div>
+            <div class="sort_panel">
+              <div class="title">
+                <span>Sort by:</span>
+                <div class="asc"></div>
+              </div>
+              <select class="sortSelection">
+                <option hidden>--выберите--</option>
+                <option value="reiting-sort">по рейтингу</option>
+                <option value="price-sort">по цене</option>
+                <option value="name-sort">по алфавиту</option>
+              </select>
+            </div>
+          </section>
+
+          <section class="pizza_items">
+            <h1>Все пиццы</h1>
+            <div class="cards"></div>
+          </section>
+        </main>
+
+        <div class="carts none">
+          <div class="line"></div>
+          <main class="cart_main">
+            <section class="cart_section">
+              <div class="cart_title">
+                <div class="cart_text">
+                  <img src="../../img/shopping_icon.png" alt="" />
+                  <h1>Корзина</h1>
+                </div>
+                <div class="trash_text">
+                  <img src="../../img/trash_icon.svg" alt="" />
+                  <p>Очистить корзину</p>
+                </div>
+              </div>
+              <div class="cart_items">
+                <!-- <div class="cart_item">
+                  <div class="item_info">
+                    <img src="../../img/pizza-items/02.jpg" alt="" />
+                    <div class="item_info_description">
+                      <h1>Сырный цыпленок</h1>
+                      <p>тонкое тесто, 26 см.</p>
+                    </div>
+                  </div>
+                  <div class="item_count">
+                    <button>
+                      <p>-</p>
+                    </button>
+                    <p>2</p>
+                    <button>
+                      <p>+</p>
+                    </button>
+                  </div>
+                  <h1 class="item_price">770 P</h1>
+                  <button class="remove">
+                    <img src="../../img/remove.png" alt="remove" />
+                  </button>
+                </div> -->
+              </div>
+              <div class="cart_price">
+                <div class="cart_price-count">
+                  <p>Всего пицц: <span>3</span> шт.</p>
+                </div>
+                <div class="cart_price-total">
+                  <p>Сумма заказа: <span>900</span> P</p>
+                </div>
+              </div>
+              <div class="cart_pay">
+                <button class="returnMain">< Вернуться назад</button>
+                <button>Оплатить сейчас</button>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <script src="../scripts/data.js"></script>
+    <script src="../scripts/main.js"></script>
+    <!-- <script src="../../trash/s.js"></script> -->
+  </body>
+</html>
