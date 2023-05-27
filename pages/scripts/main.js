@@ -10,7 +10,7 @@ const allPrice = document.querySelector(".allPrice");
 const quantityPizza = document.querySelector(".quantityPizza");
 const cart_items = document.querySelector(".cart_items");
 
-let tempPizzasItem = [];
+let tempPizzasItem = data;
 let sortKey = "";
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -30,6 +30,9 @@ function displayCards(data) {
   const items = [];
 
   for (let i = 0; i < data.length; i++) {
+    let typeIndex = data[i].type.map((el) => el.isActive).indexOf(true);
+    let sizeIndex = data[i].size.map((el) => el.isActive).indexOf(true);
+
     items.push(`
             <div class="pizza_item">
                 <img src="${data[i].image}" alt="" />
@@ -38,87 +41,52 @@ function displayCards(data) {
                   <div class="type">
                     ${data[i].type
                       .map(
-                        (el) =>
+                        (el, j) =>
                           (innerHTML = `<button ${
                             el.isVisible ? "" : "disabled"
-                          }>${el.title}</button>`)
+                          } class="${el.isVisible ? "type_btn" : "type_none"} ${
+                            el.isActive ? "type_active" : ""
+                          }" onclick='changeType(data[${i}].type[${j}].subId, "type", data[${i}].id)'>${
+                            el.title
+                          }</button>`)
                       )
                       .join("")}
                   </div>
                   <div class="size">
-                    <button>26 см</button>
-                    <button>30 см</button>
-                    <button>40 см</button>
+                  ${data[i].size
+                    .map(
+                      (el, j) =>
+                        (innerHTML = `<button ${
+                          el.isVisible ? "" : "disabled"
+                        } class="${el.isVisible ? "type_btn" : "type_none"} ${
+                          el.isActive ? "type_active" : ""
+                        }" onclick='changeType(data[${i}].size[${j}].subId, "size", data[${i}].id)'>${
+                          el.title
+                        }</button>`)
+                    )
+                    .join("")}
+                     
                   </div>
                 </div>
                 <div class="coast">
                   <span
                     >от
-                    <p class="price">${data[i].price}</p>
+                    <p class="price">${
+                      data[i].size[sizeIndex].price[typeIndex]
+                    }</p>
                     Р</span
                   >
-                  <button onclick='addInCard(data[${i}].id, data[${i}].price)'>+ Добавить</button>
+                  <button onclick='addInCard(
+                        data[${i}].size[${sizeIndex}].subId, 
+                        data[${i}].type[${typeIndex}].subId, 
+                        data[${i}].size[${sizeIndex}].price[${typeIndex}],
+                        data[${i}].name,
+                        data[${i}].id
+                    )'>+ Добавить</button>
                 </div>
               </div>`);
   }
   return items;
-}
-
-function displayCart() {
-  let cookies = document.cookie.split("; ");
-  let cookie = false;
-
-  for (let i = 0; i < cookies.length; i++) {
-    if (cookies[i].split("=")[0] === "pizza") {
-      cookie = cookies[i].split("=")[1].split(",");
-    }
-  }
-
-  const totalPrice = cookie[0];
-  const idPizzas = cookie.splice(1, cookie.length);
-
-  let objPizzas = {};
-
-  for (let i = 0; i < idPizzas.length; i++) {
-    const key = idPizzas[i];
-
-    if (objPizzas[key] !== undefined) {
-      objPizzas[key] += 1;
-    } else {
-      objPizzas[key] = 1;
-    }
-  }
-
-  let items = [];
-
-  for (const key in objPizzas) {
-    let itemObj = data.filter((el) => el.id === key);
-
-    items.push(`<div class="cart_item">
-    <div class="item_info">
-      <img src="${itemObj[0].image}" alt="" />
-      <div class="item_info_description">
-        <h1>${itemObj[0].name}</h1>
-        <p>тонкое тесто, 26 см.</p>
-      </div>
-    </div>
-    <div class="item_count">
-      <button>
-        <p>-</p>
-      </button>
-      <p>${objPizzas[key]}</p>
-      <button>
-        <p>+</p>
-      </button>
-    </div>
-    <h1 class="item_price">${objPizzas[key] * itemObj[0].price} P</h1>
-    <button class="remove">
-      <img src="../../img/remove.png" alt="remove" />
-    </button>
-  </div>`);
-  }
-
-  cart_items.innerHTML = items.join("");
 }
 
 const pizzas = displayCards(data);
@@ -153,7 +121,11 @@ sortSelection.addEventListener("change", (event) => {
   let sortType = event.target.value;
   let key = sortType.split("-")[0];
 
-  let sortPizzas = tempPizzasItem.sort((a, b) => (a[key] > b[key] ? 1 : -1));
+  let sortPizzas = [];
+
+  if (key === "name") {
+    sortPizzas = tempPizzasItem.sort((a, b) => (a[key] > b[key] ? 1 : -1));
+  }
 
   const pizzas = displayCards(sortPizzas);
 
@@ -184,20 +156,36 @@ asc.addEventListener("click", () => {
 });
 
 cartBtn.addEventListener("click", () => {
-  cartBtn.classList.add("none");
-  main.classList.add("none");
-  carts.classList.remove("none");
+  let cookies = document.cookie.split("; ");
+  let cookie = false;
 
-  displayCart();
+  for (let i = 0; i < cookies.length; i++) {
+    if (cookies[i].split("=")[0] === "pizza") {
+      cookie = true;
+    }
+  }
+
+  if (cookie) {
+    cartBtn.classList.add("none");
+    main.classList.add("none");
+    carts.classList.remove("none");
+
+    displayCart();
+  }
 });
 
 returnMain.addEventListener("click", () => {
   cartBtn.classList.remove("none");
   main.classList.remove("none");
   carts.classList.add("none");
+
+  const [totalPrice, arrayPizzas, objPizzas] = cookieCart();
+
+  quantityPizza.innerHTML = arrayPizzas.length;
+  allPrice.innerHTML = totalPrice;
 });
 
-function addInCard(id, price) {
+function addInCard(idSize, idType, price, name, id) {
   let cookies = document.cookie.split("; ");
   let cookie = false;
 
@@ -205,7 +193,9 @@ function addInCard(id, price) {
     if (cookies[i].split("=")[0] === "pizza") {
       cookie = cookies[i].split("=")[1].split(",");
       let totalPrice = +cookie[0] + +price;
-      let idPizzas = cookie.splice(1, cookie.length).concat(id);
+      let idPizzas = cookie
+        .splice(1, cookie.length)
+        .concat(`${idSize}/${idType}/${name}/${id}/${price}`);
       let resCookie = `pizza=${[totalPrice, ...idPizzas]}; max-age=100000`;
 
       document.cookie = resCookie;
@@ -213,11 +203,42 @@ function addInCard(id, price) {
       allPrice.innerHTML = totalPrice;
       quantityPizza.innerHTML = idPizzas.length;
     } else {
-      let resCookie = `pizza=${[price, id]}; max-age=100000`;
+      let resCookie = `pizza=${[
+        price,
+        idSize,
+      ]}/${idType}/${name}/${id}/${price}; max-age=100000`;
 
       document.cookie = resCookie;
       allPrice.innerHTML = price;
       quantityPizza.innerHTML = 1;
     }
   }
+}
+
+function changeType(idType, type, idPizza) {
+  p = 0;
+  let res = data.map((el) => {
+    if (el.id === idPizza) {
+      let active = true;
+      let notActive = false;
+      return {
+        ...el,
+        [type]: el[type].map((elem, i) => {
+          if (elem.subId === idType) {
+            return { ...elem, isActive: active };
+          } else {
+            return { ...elem, isActive: notActive };
+          }
+        }),
+      };
+    } else {
+      return el;
+    }
+  });
+  data = res;
+  tempPizzasItem = res;
+
+  const pizzas = displayCards(data);
+
+  cards.innerHTML = pizzas.join("");
 }

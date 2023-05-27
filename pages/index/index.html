@@ -28,6 +28,7 @@
           </button>
         </header>
 
+        <!-- PIZZA ITEMS -->
         <main class="main">
           <section class="filter_panel">
             <div class="btns_filter">
@@ -62,6 +63,7 @@
           </section>
         </main>
 
+        <!-- CART -->
         <div class="carts none">
           <div class="line"></div>
           <main class="cart_main">
@@ -76,36 +78,13 @@
                   <p>Очистить корзину</p>
                 </div>
               </div>
-              <div class="cart_items">
-                <!-- <div class="cart_item">
-                  <div class="item_info">
-                    <img src="../../img/pizza-items/02.jpg" alt="" />
-                    <div class="item_info_description">
-                      <h1>Сырный цыпленок</h1>
-                      <p>тонкое тесто, 26 см.</p>
-                    </div>
-                  </div>
-                  <div class="item_count">
-                    <button>
-                      <p>-</p>
-                    </button>
-                    <p>2</p>
-                    <button>
-                      <p>+</p>
-                    </button>
-                  </div>
-                  <h1 class="item_price">770 P</h1>
-                  <button class="remove">
-                    <img src="../../img/remove.png" alt="remove" />
-                  </button>
-                </div> -->
-              </div>
+              <div class="cart_items"></div>
               <div class="cart_price">
                 <div class="cart_price-count">
-                  <p>Всего пицц: <span>3</span> шт.</p>
+                  <p>Всего пицц: <span class="countPizzas">0</span> шт.</p>
                 </div>
                 <div class="cart_price-total">
-                  <p>Сумма заказа: <span>900</span> P</p>
+                  <p>Сумма заказа: <span class="totalPrice">0</span> P</p>
                 </div>
               </div>
               <div class="cart_pay">
@@ -115,11 +94,23 @@
             </section>
           </main>
         </div>
+
+        <!-- EMPTY PAGE -->
+        <div class="emptyPage none">
+          <h1>Корзина пустая</h1>
+          <p>
+            Вероятней всего, вы не заказывали ещё пиццу. Для того, чтобы
+            заказать пиццу, перейди на главную страницу.
+          </p>
+          <img src="../../img/empty.jpg" alt="" />
+          <button class="returnMainInEmpty">Вернуться назад</button>
+        </div>
       </div>
     </div>
 
     <script src="../scripts/data.js"></script>
     <script src="../scripts/main.js"></script>
+    <script src="../scripts/cart.js"></script>
     <!-- <script src="../../trash/s.js"></script> -->
   </body>
 </html>
