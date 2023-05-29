@@ -151,20 +151,28 @@ DOMElements.returnMainInEmpty.addEventListener("click", () => {
 });
 
 DOMElements.trash_text.addEventListener("click", () => {
-  returnToMain();
+  document.cookie = `pizza=0; max-age=-1`;
+
+  DOMElements.cart.classList.add("none");
+  DOMElements.btn_card.classList.add("none");
+  DOMElements.emptyPage.classList.remove("none");
 });
 
 function removeTypsPizzas(item, array, price) {
-  let arrayPizzas = array
-    .split(",")
-    .filter((el) => el !== item)
-    .join(",");
-
   const [totalPrice, idPizzas, objPizzas] = cookieCart();
 
-  document.cookie = `pizza=${
-    +totalPrice - +price
-  },${arrayPizzas}; max-age=100000`;
+  if (idPizzas.length > 1) {
+    let arrayPizzas = array
+      .split(",")
+      .filter((el) => el !== item)
+      .join(",");
+
+    document.cookie = `pizza=${
+      +totalPrice - +price
+    },${arrayPizzas}; max-age=100000`;
+  } else {
+    document.cookie = `pizza=0; max-age=-1`;
+  }
 
   displayCart();
 }

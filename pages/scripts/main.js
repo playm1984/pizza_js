@@ -33,6 +33,8 @@ function displayCards(data) {
     let typeIndex = data[i].type.map((el) => el.isActive).indexOf(true);
     let sizeIndex = data[i].size.map((el) => el.isActive).indexOf(true);
 
+    data[i].price = data[i].size[sizeIndex].price[typeIndex];
+
     items.push(`
             <div class="pizza_item">
                 <img src="${data[i].image}" alt="" />
@@ -123,9 +125,7 @@ sortSelection.addEventListener("change", (event) => {
 
   let sortPizzas = [];
 
-  if (key === "name") {
-    sortPizzas = tempPizzasItem.sort((a, b) => (a[key] > b[key] ? 1 : -1));
-  }
+  sortPizzas = tempPizzasItem.sort((a, b) => (a[key] > b[key] ? 1 : -1));
 
   const pizzas = displayCards(sortPizzas);
 
