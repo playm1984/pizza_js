@@ -107,7 +107,6 @@ for (let i = 0; i < sortBtns.length; i++) {
     let dataFiltered = data.filter((el) =>
       typeSort === "Все" ? el : el.section === typeSort
     );
-
     if (dataFiltered.length) {
       const pizzas = displayCards(dataFiltered);
       cards.innerHTML = pizzas.join("");
@@ -216,8 +215,7 @@ function addInCard(idSize, idType, price, name, id) {
 }
 
 function changeType(idType, type, idPizza) {
-  p = 0;
-  let res = data.map((el) => {
+  let res = tempPizzasItem.map((el) => {
     if (el.id === idPizza) {
       let active = true;
       let notActive = false;
@@ -235,10 +233,10 @@ function changeType(idType, type, idPizza) {
       return el;
     }
   });
-  data = res;
+  // data = res;
   tempPizzasItem = res;
 
-  const pizzas = displayCards(data);
+  const pizzas = displayCards(tempPizzasItem);
 
   cards.innerHTML = pizzas.join("");
 }
